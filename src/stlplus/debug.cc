@@ -16,13 +16,13 @@ static const char* unknown_function = "";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-assert_failed::assert_failed(const char* file, int line, const char* function, const std::string& message) throw() : 
-  std::logic_error(std::string(file) + std::string(":") + to_string(line) + std::string(":") + 
+assert_failed::assert_failed(const char* file, int line, const char* function, const std::string& message) :
+  std::logic_error(std::string(file) + std::string(":") + to_string(line) + std::string(":") +
                    std::string(function ? function : unknown_function) + std::string(": assertion failed: ") + message)
 {
 }
 
-assert_failed::~assert_failed(void) throw()
+assert_failed::~assert_failed(void)
 {
 }
 
@@ -43,7 +43,7 @@ void _debug_global(const char* file, int line, const char* function, bool state)
   fprintf(stderr, "debug global : %s\n", debug_global ? "on" : "off");
 }
 
-void _debug_assert_fail(const char* file, int line, const char* function, const char* test) throw(assert_failed)
+void _debug_assert_fail(const char* file, int line, const char* function, const char* test)
 {
   fprintf(stderr, "%s:%i:[%i]%s: assertion failed: %s\n", 
           filename_part(file).c_str(), line, debug_trace_depth, function ? function : unknown_function, test);
@@ -54,7 +54,7 @@ void _debug_assert_fail(const char* file, int line, const char* function, const 
 ////////////////////////////////////////////////////////////////////////////////
 
 _debug_trace::_debug_trace(const char* f, int l, const char* fn) :
-  m_file(f), m_line(l), m_function(fn ? fn : unknown_function), 
+  m_file(f), m_line(l), m_function(fn ? fn : unknown_function),
   m_depth(0), m_last(debug_last), m_dbg(false), m_old(false)
 {
   if (!debug_read)
